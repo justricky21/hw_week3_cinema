@@ -48,6 +48,10 @@ class Film
     SqlRunner.run(sql)
   end
 
+  def count_customer_watched
+    return self.customers.count
+  end
+
   def customers
     sql = "SELECT customers.*
         FROM customers

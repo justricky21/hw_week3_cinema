@@ -1,4 +1,7 @@
+require('pry-byebug')
 require_relative('../db/sql_runner')
+require_relative('film')
+require_relative('ticket')
 class Customer
   attr_accessor :name, :funds
   attr_reader :id
@@ -57,6 +60,18 @@ class Customer
     values = [@id]
     films = SqlRunner.run(sql,values)
     return films.map { |film| Film.new(film) }
+  end
+
+  def count_films_watched
+    return self.films.count
+  end
+
+  def buy_ticket(movie_id)
+    film = Film.find(movie_id)
+    @funds -= film.price
+    self.update()
+    ticket = Ticket.new('customer_id' => @id, 'film_id' => film.id)
+    ticket.save
   end
 
 end
